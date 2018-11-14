@@ -74,7 +74,7 @@ In gross, the conceptual steps are:
 
 #. The ``rc`` is announced for developer testing
 
-#. Additional ``rc`` are created and announced, if/as necessary to resolve
+#. An additional ``rc`` is created and announced, if/as necessary to resolve
    any release blocking issues that may arise.
 
 #. Documentation is updated on a branch (release notes, installation
@@ -107,19 +107,20 @@ Branching the docs
 
 At this point you should branch `lsst/pipelines_lsst_io <pipelines_lsst_io>`_
 so as not to capture any changes on the ``master`` branch that may occur during
-the release process.
+the release process.  XXX maybe say something about branch naming? XXX
 
 .. code-block:: bash
 
    git clone https://github.com/lsst/pipelines_lsst_io.git
    git checkout -b v42.0.x
+   git push -u origin v42.0.x
 
 Identify base weekly build
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Identify the *git tag* of the weekly build you wish to base the release release
+Identify the *git tag* of the weekly build you wish to base the release
 candidate upon, say ``w.9999.42``.  This should be determined by discussion
-with the product owner and team developer.
+with the product owner and team developer.  XXX who are the product owner and team developer? XXX
 
 
 1st Release Candidate
@@ -134,7 +135,7 @@ git refs should be only the tag of the "seed" weekly release.  The release tag
 
 See git-tags_ for details on the formatting of git tags.
 
-Example:
+Example: XXX this example makes it seem like the release tag is named by the weekly number.  This is not, in general, true. XXX
 
 .. code-block:: text
 
@@ -145,7 +146,7 @@ Example:
 Announce rc1
 ^^^^^^^^^^^^
 
-Update the release status `community.lsst.org <clo>`_ post to to announce the
+Update the release status `community.lsst.org <clo>`_ post to announce the
 availability of ``rc1``.
 
 
@@ -155,10 +156,12 @@ availability of ``rc1``.
 An ``.rcX``, where X is ``> 1``, is only required if a problem is found with
 the initial ``rc``.
 
-**Any subsequent ``rc` differs slightly from the initial ``rc1`` process
+.. note::
+
+Any subsequent ``rc`` differs slightly from the initial ``rc1`` process
 because it inherently is not identical to a previous ``git tag`` (if it was,
 there would be no reason to produce another ``rc``). The creation of a git
-release branch prior to ``rc1`` would eliminate the differences.**
+release branch prior to ``rc1`` would eliminate the differences.  XXX I'm not sure what the implication is here. If we generate a release branch prior to rc1, isn't that just restarting the release process? XXX
 
 Branch, Merge
 ^^^^^^^^^^^^^
@@ -166,7 +169,7 @@ Branch, Merge
 Any git repository that needs to be modified for additional ``rc`` releases
 should be **branched** and have the necessary changes merged to a release
 branch.  Eg., if changes were needed in ``v42.0.0.rc1`` a "release branch"
-along the lines of ``v42.0.x`` should be created in the repos that need changes.
+along the lines of ``v42.0.x`` should be created in the repos that need changes.  XXX I'm not sure what the x should be in v42.0.x.  You are not suggesting a point release of v42, but an update to facilitate rc2.  Can you clarify?  XXX
 
 (**TBD**: merge to master and cherry-pick to release branch or merge to release
 branch and merge to ``master``???)
@@ -226,7 +229,7 @@ an alphabetic prefix (eg., ``v``).  This has the effect of changing the *eups*
 version strings as ``lsst-build`` sets the *eups* product version based on the
 most recent git ref that has an *integer* as the first character.
 
-As consequence of this behavior is that the final git tag **must** be present
+A consequence of this behavior is that the final git tag **must** be present
 prior to the production of ``eupspkg``/*eups tag*.
 
 Build and Publish
@@ -266,6 +269,7 @@ Branch `lsst/lsst <lsst>`_:
 
    git clone https://github.com/lsst/lsst.git
    git checkout -b v42.0.x
+   git push -u origin v42.0.x
 
 Now in ``lsst/scripts/newinstall.sh`` change the canonical reference for this
 newinstall to be one associated with the current branch:
@@ -311,7 +315,7 @@ Other OS checking
 -----------------
 
 While we only officially support the software on certain platforms
-(`RHEL/CentOS 7` is the reference, and we CI `MacOS` and `RHEL 6`), we check in
+(`RHEL/CentOS 7` is the reference, and we CI `MacOS` and `RHEL 6`), we check on
 a number of other popular platforms (eg `Ubuntu`, newer versions of `CentOS`
 etc) by spinning up machines on Digital Ocean (typically) and following the
 user install instructions. This also allows us to check the user from-scratch
@@ -346,7 +350,7 @@ c.l.o stubb
   1. Build and publish rc1 release candidate (based on w.9999.42)
   1. Branch v42.0.x of newinstall.sh
   1. **Wait for first round of bugs to clear**
-  1.Repeat last 2 steps, .rcN candidates  <-- final candidate is rc1 [yay!]
+  1. Repeat last 2 steps, .rcN candidates  <-- final candidate is rc1 [yay!]
   1. Confirm DM Externals are at stable tags
   1. Tag DM Auxilliary (non-lsst_distrib) repos
   1. Full OS testing (see https://ls.st/faq )
@@ -412,7 +416,7 @@ Format of "tags"
 git tags
 --------
 
-- DM produced code this is part of an "official" release  **must** have a git
+- DM produced code this is part of an "official" release **must** have a git
   tag that starts with a *number*
 
 - "official" release git tags on external/third-party software that DM has
@@ -528,7 +532,7 @@ as the git ``sha1`` of the conda environment files is used to defined the
 Adding a new Conda package
 --------------------------
 
-#. The name of the package needs to "bleed" or un-versioned environment files in
+#. The name of the package needs to be in the(?) "bleed" or un-versioned environment files in
    the ``lsst/lsstsw`` repo. Which are:
 
     - https://github.com/lsst/lsstsw/blob/master/etc/conda3_bleed-linux-64.txt
@@ -553,7 +557,7 @@ Adding a new Conda package
 
     ``conda list -e`` should be run on ``linux`` and ``osx`` installs and the
     results committed for both platforms as **a single commit** so that the the
-    abbrev sha1 of the latest commit for both files will be the same.
+    abbreviated sha1 of the latest commit for both files will be the same.
 
 #. As an abbreviated sha1 of the ``lsst/lsstsw`` repo is used to select which
    [version of] conda env files are used and to define the eups binary tarball
@@ -574,6 +578,8 @@ Adding a new Conda package
 
 Making a Manual Release
 =======================
+
+XXX I'm a little uncomfortable even writing this isn the release process readme.  It seems like a see `link` for how the sausage is made situation, if at all. XXX
 
 **The official release process is captured as a jenkins job:
 https://ci.lsst.codes/job/release/job/official-release/ which should be
